@@ -93,12 +93,30 @@ $(".list-group").on("click", "p", function() {
 
   $(this).replaceWith(textInput);
   // $(this)=<p> element & replaceWith replaces <p> with <textarea> element.
+  // Now $(this)=<textarea> element.
   // auto foucs new element
   textInput.trigger("focus");
   });
 
   $(".list-group").on("blur", "text-area", function() {
-
+// Blur event happens when an element has lost focus & this is an event listener for that situation.
+// get the textarea's current value/text
+var text = $(this)
+.val()
+.trim();
+// get the parent ul's id attribute
+var status = $(this)
+.closest(".list-group")
+/*closest() method returns the first ancestor of the selected element
+Ancesotr is a parent, grandparent, great-grandparent.
+This method moves up the DOM tree to retrieve the most recently used ancestor of the element. */
+.attr("id")
+//attr() method sets or returns attributes and values of the selected elements.
+.replace("list-", "");
+// get the task's position in the list of other li elements
+var index = $(this)
+.closest(".list-group-item")
+.index();
   });
 
 /*on() method attaches one or more event handlers for the selected elements
