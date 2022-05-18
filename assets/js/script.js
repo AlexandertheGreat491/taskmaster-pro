@@ -117,6 +117,25 @@ This method moves up the DOM tree to retrieve the most recently used ancestor of
 var index = $(this)
 .closest(".list-group-item")
 .index();
+
+tasks[status][index].text = text;
+saveTasks();
+
+/* tasks is an object.
+tasks [status] returns an array.
+tasks[status][index] returns the object at the given index in the array.
+tasks[status][index].text returns the text property of the object at the given index. */
+
+// recreate p element
+var taskP = $("<p>")
+.addClass("m-1")
+.text(text);
+// m- sets the margin & m-1 sets the margin-left or padding-left.
+//1- (by default) sets the margin or padding to $spacer * .25.
+// $spacer * .25 sets the margin or padding to .25rem
+// replace textarea with p element
+$(this).replaceWith(taskP);
+
   });
 
 /*on() method attaches one or more event handlers for the selected elements
