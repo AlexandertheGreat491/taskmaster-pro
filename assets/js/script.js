@@ -82,6 +82,25 @@ $("#task-form-modal .btn-primary").click(function() {
   }
 });
 
+$(".list-group").on("click", "p", function() {
+  var text = $(this)
+  .text()
+  .trim();
+
+  var textInput = $("<textarea>")
+  .addClass("form-control")
+  .val(text);
+
+  $(this).replaceWith(textInput);
+  // $(this)=<p> element & replaceWith replaces <p> with <textarea> element.
+  });
+
+/*on() method attaches one or more event handlers for the selected elements
+and child elements. Attaches p elements to the <ul> element that has the list-group class.
+this keyword is used to refer to the actual elements.*/
+// text() method will get the inner text content of the current element <p> & represented by $(this).
+// trim() method removes any extra white space before or after the element targeted by text().
+// $("<textarea>") tells jQuery to create new <textarea> element.
 // remove all tasks
 $("#remove-tasks").on("click", function() {
   for (var key in tasks) {
