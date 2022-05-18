@@ -93,6 +93,12 @@ $(".list-group").on("click", "p", function() {
 
   $(this).replaceWith(textInput);
   // $(this)=<p> element & replaceWith replaces <p> with <textarea> element.
+  // auto foucs new element
+  textInput.trigger("focus");
+  });
+
+  $(".list-group").on("blur", "text-area", function() {
+
   });
 
 /*on() method attaches one or more event handlers for the selected elements
