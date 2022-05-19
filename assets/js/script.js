@@ -82,6 +82,68 @@ $("#task-form-modal .btn-primary").click(function() {
   }
 });
 
+$(".list-group").on("click", "p", function() {
+  var text = $(this)
+  .text()
+  .trim();
+
+  var textInput = $("<textarea>")
+  .addClass("form-control")
+  .val(text);
+
+  $(this).replaceWith(textInput);
+  // $(this)=<p> element & replaceWith replaces <p> with <textarea> element.
+  // Now $(this)=<textarea> element.
+  // auto foucs new element
+  textInput.trigger("focus");
+  });
+
+  $(".list-group").on("blur", "text-area", function() {
+// Blur event happens when an element has lost focus & this is an event listener for that situation.
+// get the textarea's current value/text
+var text = $(this)
+.val()
+.trim();
+// get the parent ul's id attribute
+var status = $(this)
+.closest(".list-group")
+/*closest() method returns the first ancestor of the selected element
+Ancesotr is a parent, grandparent, great-grandparent.
+This method moves up the DOM tree to retrieve the most recently used ancestor of the element. */
+.attr("id")
+//attr() method sets or returns attributes and values of the selected elements.
+.replace("list-", "");
+// get the task's position in the list of other li elements
+var index = $(this)
+.closest(".list-group-item")
+.index();
+
+tasks[status][index].text = text;
+saveTasks();
+
+/* tasks is an object.
+tasks [status] returns an array.
+tasks[status][index] returns the object at the given index in the array.
+tasks[status][index].text returns the text property of the object at the given index. */
+
+// recreate p element
+var taskP = $("<p>")
+.addClass("m-1")
+.text(text);
+// m- sets the margin & m-1 sets the margin-left or padding-left.
+//1- (by default) sets the margin or padding to $spacer * .25.
+// $spacer * .25 sets the margin or padding to .25rem
+// replace textarea with p element
+$(this).replaceWith(taskP);
+
+  });
+
+/*on() method attaches one or more event handlers for the selected elements
+and child elements. Attaches p elements to the <ul> element that has the list-group class.
+this keyword is used to refer to the actual elements.*/
+// text() method will get the inner text content of the current element <p> & represented by $(this).
+// trim() method removes any extra white space before or after the element targeted by text().
+// $("<textarea>") tells jQuery to create new <textarea> element.
 // remove all tasks
 $("#remove-tasks").on("click", function() {
   for (var key in tasks) {
