@@ -138,6 +138,66 @@ $(this).replaceWith(taskP);
 
   });
 
+// due date was clicked
+// specifies what to do when the label element is clicked.
+$(".list-group").on("click", "span", funciton() {
+  // get current text
+  var date = $(this)
+  .text()
+  .trim();
+  // crate new input element
+  var dateInput = $("<input>")
+  .attr("type", "text")
+  // sets what can be entered into the input field.
+  .addClass("form-control")
+  .val(date);
+
+  // swap out elements
+  $(this)replaceWith(dateInput);
+
+  // automatically focus on new element
+  dateInput.trigger("focus");
+});
+
+// value of the date was changed
+$(".list-group").on("blur", "input[type='text']",function() {
+// .on(events[,selector][,data], handler)
+// blur event is sent to an element when it loses focus
+// An element can lose focus via keyboard commands, such as the Tab key, or by mouse clicks elsewhere on the page.
+
+// get current text
+var date = $(this)
+.val()
+.trim();
+
+// get the parent ul's id attribute
+var status = $(this)
+// $(this) refers to the element on which the event is called, which in this case is the <input> element.
+.closest(".list-group")
+.attr("id")
+.replace("list-", "");
+
+// get the task's position in the list of other li elements
+var index = $(this)
+.closest(".list-group item")
+.index();
+
+// update task in array and re-save to localStorage
+tasks[status][index].date = date;
+saveTasks();
+
+// recreate span element with bootstrap classes
+var taskSpan = $("<span>")
+.addClass("badge badge-primary badge-pill")
+.text(date);
+
+// replace input with span element
+$(this).replaceWith(taskSpan);
+// $(this) refers to the element that it belongs to,  which in this case is input
+// input element is being replaced with a span element.
+// <span> is an inline container
+
+});
 /*on() method attaches one or more event handlers for the selected elements
 and child elements. Attaches p elements to the <ul> element that has the list-group class.
 this keyword is used to refer to the actual elements.*/
