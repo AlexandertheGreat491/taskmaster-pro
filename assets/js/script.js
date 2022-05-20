@@ -54,6 +54,7 @@ var auditTask = function(taskEl) {
   // get date from task element
 
   var date = $(taskEl).find("span").text().trim();
+  
 // date variable created from taskEl to make a new Moment object
 // ensure that it worked
 
