@@ -146,6 +146,7 @@ $("modalDueDate").datepicker({
 minDate: 1
 });
 // The minDate option is the minimum selectable date and the 1 value sets that to be one day from today.
+// The minimum date is now one day from today.
 // save button in modal was clicked
 $("#task-form-modal .btn-primary").click(function() {
   // get form values
