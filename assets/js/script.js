@@ -13,6 +13,8 @@ var createTask = function (taskText, taskDate, taskList) {
   // append span and p element to parent li
   taskLi.append(taskSpan, taskP);
 
+// check due date
+audtiTask(taskLi);
 
   // append to ul list on the page
   $("#list-" + taskList).append(taskLi);
