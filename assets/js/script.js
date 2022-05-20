@@ -63,10 +63,10 @@ var auditTask = function (taskEl) {
   // convert to moment object at 5:00pm
 
   var time = moment(date, "L").set("hour", 17);
-  
+
   // moment(date, "L") configures the Moment object for the user's local time.
   // this should print out an object for the value value of the date variable, but at 5:00pm of that date.
-
+  // .set("hour", 17) method changes the time to 5pm instead of 12am. 17=5pm, 24-hour time.
   console.log(time);
 
 };
