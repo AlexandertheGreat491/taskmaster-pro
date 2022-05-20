@@ -140,6 +140,10 @@ $("#task-form-modal").on("shown.bs.modal", function() {
   $("#modalTaskDescription").trigger("focus");
 });
 
+// Selects a date from a popup or inline calendar.
+// Targets the second <label> element with the "Due Date" text.
+$("modalDueDate").datepicker();
+
 // save button in modal was clicked
 $("#task-form-modal .btn-primary").click(function() {
   // get form values
