@@ -296,6 +296,8 @@ $(".list-group").on("click", "span", function () {
 });
 
 // value of the date was changed
+// due date change even handler
+
 $(".list-group").on("blur", "input[type='text']", function () {
   // .on(events[,selector][,data], handler)
   // blur event is sent to an element when it loses focus
