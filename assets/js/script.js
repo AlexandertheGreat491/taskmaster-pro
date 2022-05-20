@@ -63,9 +63,14 @@ out: function(event){
   console.log("out", event.target)
 },
 update: function(event) {
-  console.log($(this).children());
+  //console.log($(this).children());
+  // loop over the current set of children in the sortable list.
+  $(this).children().each(function(){
+console.log($(this));
+  });
 }
-});
+
+
 // sortable() turned every element with the class list-group in a sortable list
 /*connectWith is a selector of other sortable elements that the items from this list should be connected to.
 connectWith  linked these sortable lists with any other lists that have the same class.*/
