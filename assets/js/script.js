@@ -47,7 +47,7 @@ var saveTasks = function () {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 };
 
-var audtiTask = function(taskEl) {
+var auditTask = function(taskEl) {
   // to ensure element is getting to the function
   // console.log(taskEl);
   // get date from task element
