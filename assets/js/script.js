@@ -111,13 +111,14 @@ $("#trash").droppable({
   // Triggered when an accepted draggable is dropped on the droppable.
     //console.log("drop");
     ui.draggable.remove();
+    // remove dragged element from the dom.
     // remove() method removes the element entirely from the DOM.
   },
-  over: function(event, ul) {
-    console.log("over");
+  over: function(event, ui) {
+    console.log(ui);
   },
   out: function(event, ui) {
-    console.log("out");
+    console.log(ui);
   }
 });
 
@@ -130,7 +131,7 @@ connectWith  linked these sortable lists with any other lists that have the same
 // modal was triggered
 $("#task-form-modal").on("show.bs.modal", function() {
   // clear values
-  $("#modalTaskDescription, #modalDueDate").val("");
+  $("#modalTaskDescription, #modalDueDate").trigger("focus");
 });
 
 // modal is fully visible
@@ -160,12 +161,13 @@ $("#task-form-modal .btn-primary").click(function() {
     saveTasks();
   }
 });
-
+// task text was clicked
 $(".list-group").on("click", "p", function() {
+  // get current text p element
   var text = $(this)
   .text()
   .trim();
-
+// replace p element with a new textarea
   var textInput = $("<textarea>")
   .addClass("form-control")
   .val(text);
@@ -176,13 +178,12 @@ $(".list-group").on("click", "p", function() {
   // auto foucs new element
   textInput.trigger("focus");
   });
-
+// editable field was un-focused
   $(".list-group").on("blur", "text-area", function() {
 // Blur event happens when an element has lost focus & this is an event listener for that situation.
 // get the textarea's current value/text
-var text = $(this)
-.val()
-.trim();
+var text = $(this).val();
+
 // get the parent ul's id attribute
 var status = $(this)
 .closest(".list-group")
@@ -196,7 +197,7 @@ This method moves up the DOM tree to retrieve the most recently used ancestor of
 var index = $(this)
 .closest(".list-group-item")
 .index();
-
+// update task in array and re-save to localstroage.
 tasks[status][index].text = text;
 saveTasks();
 
@@ -217,27 +218,24 @@ $(this).replaceWith(taskP);
 
   });
 
-// due date was clicked
-// specifies what to do when the label element is clicked.
-$(".list-group").on("click", "span", funciton() {
-  // get current text
-  var date = $(this)
-  .text()
-  .trim();
-  // crate new input element
-  var dateInput = $("<input>")
-  .attr("type", "text")
-  // sets what can be entered into the input field.
-  .addClass("form-control")
-  .val(date);
-
-  // swap out elements
-  $(this)replaceWith(dateInput);
-
-  // automatically focus on new element
-  dateInput.trigger("focus");
-});
-
+  // due date was clicked
+  $(".list-group").on("click", "span", function() {
+    // get current text
+    var date = $(this)
+      .text()
+      .trim();
+  
+    // create new input element
+    var dateInput = $("<input>")
+      .attr("type", "text")
+      .addClass("form-control")
+      .val(date);
+    $(this).replaceWith(dateInput);
+  
+    // automatically bring up the calendar
+    dateInput.trigger("focus");
+  });
+  
 // value of the date was changed
 $(".list-group").on("blur", "input[type='text']",function() {
 // .on(events[,selector][,data], handler)
