@@ -142,8 +142,10 @@ $("#task-form-modal").on("shown.bs.modal", function() {
 
 // Selects a date from a popup or inline calendar.
 // Targets the second <label> element with the "Due Date" text.
-$("modalDueDate").datepicker();
-
+$("modalDueDate").datepicker({
+minDate: 1
+});
+// The minDate option is the minimum selectable date and the 1 value sets that to be one day from today.
 // save button in modal was clicked
 $("#task-form-modal .btn-primary").click(function() {
   // get form values
