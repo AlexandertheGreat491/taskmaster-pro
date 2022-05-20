@@ -78,7 +78,7 @@ var auditTask = function (taskEl) {
   if (moment().isAfter(time)) {
     $(taskEl).addClass("list-group-item-danger");
   }
-
+//moment().isAfter(time) is a query method that means true or false checks on the date can be performed to get more information.
 };
 
 // enable draggable/sortable feature on list-group elements
