@@ -58,7 +58,7 @@ var auditTask = function (taskEl) {
   // date variable created from taskEl to make a new Moment object
   // ensure that it worked
 
-  console.log(date);
+  //console.log(date);
 
   // convert to moment object at 5:00pm
 
@@ -67,7 +67,17 @@ var auditTask = function (taskEl) {
   // moment(date, "L") configures the Moment object for the user's local time.
   // this should print out an object for the value value of the date variable, but at 5:00pm of that date.
   // .set("hour", 17) method changes the time to 5pm instead of 12am. 17=5pm, 24-hour time.
-  console.log(time);
+  //console.log(time);
+
+  // remove old classes from element
+
+  $(taskEl).removeClass("list-group-item-warning list-group-item-danger");
+
+  // apply new class if task is near/over due date
+
+  if (moment().isAfter(time)) {
+    $(taskEl).addClass("list-group-item-danger");
+  }
 
 };
 
