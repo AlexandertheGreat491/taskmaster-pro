@@ -13,8 +13,8 @@ var createTask = function (taskText, taskDate, taskList) {
   // append span and p element to parent li
   taskLi.append(taskSpan, taskP);
 
-// check due date
-audtiTask(taskLi);
+  // check due date
+  audtiTask(taskLi);
 
   // append to ul list on the page
   $("#list-" + taskList).append(taskLi);
@@ -47,24 +47,25 @@ var saveTasks = function () {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 };
 
-var auditTask = function(taskEl) {
+var auditTask = function (taskEl) {
 
   // to ensure element is getting to the function
   // console.log(taskEl);
   // get date from task element
 
   var date = $(taskEl).find("span").text().trim();
-  
-// date variable created from taskEl to make a new Moment object
-// ensure that it worked
+
+  // date variable created from taskEl to make a new Moment object
+  // ensure that it worked
 
   console.log(date);
 
   // convert to moment object at 5:00pm
 
   var time = moment(date, "L").set("hour", 17);
-// moment(date, "L") configures the Moment object for the user's local time.
-// this should print out an object for the value value of the date variable, but at 5:00pm of that date.
+  
+  // moment(date, "L") configures the Moment object for the user's local time.
+  // this should print out an object for the value value of the date variable, but at 5:00pm of that date.
 
   console.log(time);
 
