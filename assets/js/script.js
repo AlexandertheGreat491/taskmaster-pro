@@ -54,16 +54,16 @@ var auditTask = function(taskEl) {
   // get date from task element
 
   var date = $(taskEl).find("span").text().trim();
+// date variable created from taskEl to make a new Moment object
+// ensure that it worked
 
-  // ensure that it worked
-  
   console.log(date);
 
   // convert to moment object at 5:00pm
 
   var time = moment(date, "L").set("hour", 17);
-
-  // this should print out an object for the value value of the date variable, but at 5:00pm of that date.
+// moment(date, "L") configures the Moment object for the user's local time.
+// this should print out an object for the value value of the date variable, but at 5:00pm of that date.
 
   console.log(time);
 
