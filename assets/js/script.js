@@ -296,7 +296,22 @@ $(".list-group").on("click", "span", function () {
 });
 
 // value of the date was changed
-// due date change even handler
+// due date change event handler
+$(".list-group").on("change", "input[type='text']", function(){
+var date = $(this).val();
+
+var status = $(this).closest(".list-group").attr("id").replace("list-", "");
+var index = $(this).closest(".list-group-item").index();
+
+tasks[status][index].date = date;
+saveTasks();
+
+var taskSpan = $("<span>").addClass("badge badge-primary badge-pill").text(date);
+$(this).replaceWith(taskSpan);
+
+// Pass task's <li> element into auditTask() to check new due date.
+auditTask($(taskSpan).closest(".list-group-item"));
+});
 
 $(".list-group").on("blur", "input[type='text']", function () {
   // .on(events[,selector][,data], handler)
