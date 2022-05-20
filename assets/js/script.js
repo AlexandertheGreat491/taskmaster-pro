@@ -79,9 +79,19 @@ var auditTask = function (taskEl) {
     $(taskEl).addClass("list-group-item-danger");
   }
 //moment().isAfter(time) is a query method that means true or false checks on the date can be performed to get more information.
-};
+// .isAfter() checks is that the moment() value comes later than the value of the time variable.
 
-// enable draggable/sortable feature on list-group elements
+// apply new class if task is near/over due date
+if (moment().isAfter(time)) {
+  $(taskEl).addClass("list-group-item-danger");
+}
+else if (Math.abs(moment().diff(time, "days")) <= 2) {
+  $(taskEl).addClass("list-group-item-warning");
+}
+};
+// .diff() compares two times
+// .abs() JavaScript Math object returns the absolute value of a number as long as it's greater than or equal to 2 days.
+// enable draggable/sortable feature on list-group elements.
 
 $(".card .list-group").sortable({
   // enable dragging across lists
