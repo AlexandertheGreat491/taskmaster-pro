@@ -109,7 +109,9 @@ $("#trash").droppable({
   // "touch" value used when the draggable overlaps the droppable any amount.
   drop: function(event, ui) {
   // Triggered when an accepted draggable is dropped on the droppable.
-    console.log("drop");
+    //console.log("drop");
+    ui.draggable.remove();
+    // remove() method removes the element entirely from the DOM.
   },
   over: function(event, ul) {
     console.log("over");
