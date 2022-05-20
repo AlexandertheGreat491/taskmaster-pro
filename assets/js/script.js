@@ -99,6 +99,25 @@ $(".card .list-group").sortable({
   }
 });
 
+// trash icon can be dropped onto
+// droppable creates targets for draggable elements.
+$("#trash").droppable({
+  accept: ".card .list-group-item",
+  // Controls which draggable elements are accepted by the droppable.
+  tolerance: "touch",
+  // Specifies which mode to use for testing whether a draggable is hovering over a droppable.
+  // "touch" value used when the draggable overlaps the droppable any amount.
+  drop: function(event, ui) {
+  // Triggered when an accepted draggable is dropped on the droppable.
+    console.log("drop");
+  },
+  over: function(event, ul) {
+    console.log("over");
+  },
+  out: function(event, ui) {
+    console.log("out");
+  }
+});
 
 // jQuery's each() method will run a callback function for every item/element in the array.
 // $(this) refers to the <li> element.
