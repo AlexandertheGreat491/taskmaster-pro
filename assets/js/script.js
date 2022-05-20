@@ -69,8 +69,8 @@ update: function(event) {
 console.log($(this));
   });
 }
-
-
+// jQuery's each() method will run a callback function for every item/element in the array.
+// $(this) refers to the <li> element.
 // sortable() turned every element with the class list-group in a sortable list
 /*connectWith is a selector of other sortable elements that the items from this list should be connected to.
 connectWith  linked these sortable lists with any other lists that have the same class.*/
