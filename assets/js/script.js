@@ -1,6 +1,6 @@
 var tasks = {};
 
-var createTask = function(taskText, taskDate, taskList) {
+var createTask = function (taskText, taskDate, taskList) {
   // create elements that make up a task item
   var taskLi = $("<li>").addClass("list-group-item");
   var taskSpan = $("<span>")
@@ -18,7 +18,7 @@ var createTask = function(taskText, taskDate, taskList) {
   $("#list-" + taskList).append(taskLi);
 };
 
-var loadTasks = function() {
+var loadTasks = function () {
   tasks = JSON.parse(localStorage.getItem("tasks"));
 
   // if nothing in localStorage, create a new object to track all task status arrays
@@ -32,16 +32,16 @@ var loadTasks = function() {
   }
 
   // loop over object properties
-  $.each(tasks, function(list, arr) {
+  $.each(tasks, function (list, arr) {
     console.log(list, arr);
     // then loop over sub-array
-    arr.forEach(function(task) {
+    arr.forEach(function (task) {
       createTask(task.text, task.date, list);
     });
   });
 };
 
-var saveTasks = function() {
+var saveTasks = function () {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 };
 
@@ -53,25 +53,25 @@ $(".card .list-group").sortable({
   scroll: false,
   tolerance: "pointer",
   helper: "clone",
-  activate: function(event, ui) {
+  activate: function (event, ui) {
     console.log(ui);
   },
-  deactivate: function(event, ui) {
+  deactivate: function (event, ui) {
     console.log(ui);
   },
-  over: function(event) {
+  over: function (event) {
     console.log(event);
   },
-  out: function(event) {
+  out: function (event) {
     console.log(event);
   },
-  update: function() {
+  update: function () {
     var tempArr = [];
 
     // loop over current set of children in sortable list
     $(this)
       .children()
-      .each(function() {
+      .each(function () {
         // save values in temp array
         tempArr.push({
           text: $(this)
@@ -94,7 +94,7 @@ $(".card .list-group").sortable({
     tasks[arrName] = tempArr;
     saveTasks();
   },
-  stop: function(event) {
+  stop: function (event) {
     $(this).removeClass("dropover");
   }
 });
@@ -107,17 +107,17 @@ $("#trash").droppable({
   tolerance: "touch",
   // Specifies which mode to use for testing whether a draggable is hovering over a droppable.
   // "touch" value used when the draggable overlaps the droppable any amount.
-  drop: function(event, ui) {
-  // Triggered when an accepted draggable is dropped on the droppable.
+  drop: function (event, ui) {
+    // Triggered when an accepted draggable is dropped on the droppable.
     //console.log("drop");
     ui.draggable.remove();
     // remove dragged element from the dom.
     // remove() method removes the element entirely from the DOM.
   },
-  over: function(event, ui) {
+  over: function (event, ui) {
     console.log(ui);
   },
-  out: function(event, ui) {
+  out: function (event, ui) {
     console.log(ui);
   }
 });
@@ -129,13 +129,13 @@ $("#trash").droppable({
 connectWith  linked these sortable lists with any other lists that have the same class.*/
 
 // modal was triggered
-$("#task-form-modal").on("show.bs.modal", function() {
+$("#task-form-modal").on("show.bs.modal", function () {
   // clear values
   $("#modalTaskDescription, #modalDueDate").trigger("focus");
 });
 
 // modal is fully visible
-$("#task-form-modal").on("shown.bs.modal", function() {
+$("#task-form-modal").on("shown.bs.modal", function () {
   // highlight textarea
   $("#modalTaskDescription").trigger("focus");
 });
@@ -143,12 +143,12 @@ $("#task-form-modal").on("shown.bs.modal", function() {
 // Selects a date from a popup or inline calendar.
 // Targets the second <label> element with the "Due Date" text.
 $("modalDueDate").datepicker({
-minDate: 1
+  minDate: 1
 });
 // The minDate option is the minimum selectable date and the 1 value sets that to be one day from today.
 // The minimum date is now one day from today.
 // save button in modal was clicked
-$("#task-form-modal .btn-primary").click(function() {
+$("#task-form-modal .btn-primary").click(function () {
   // get form values
   var taskText = $("#modalTaskDescription").val();
   var taskDate = $("#modalDueDate").val();
@@ -169,117 +169,123 @@ $("#task-form-modal .btn-primary").click(function() {
   }
 });
 // task text was clicked
-$(".list-group").on("click", "p", function() {
+// This event listener is for the <textarea> element.
+$(".list-group").on("click", "p", function () {
   // get current text p element
   var text = $(this)
-  .text()
-  .trim();
-// replace p element with a new textarea
+    .text()
+    .trim();
+  // replace p element with a new textarea
   var textInput = $("<textarea>")
-  .addClass("form-control")
-  .val(text);
+    .addClass("form-control")
+    .val(text);
 
   $(this).replaceWith(textInput);
   // $(this)=<p> element & replaceWith replaces <p> with <textarea> element.
   // Now $(this)=<textarea> element.
   // auto foucs new element
   textInput.trigger("focus");
-  });
+});
 // editable field was un-focused
-  $(".list-group").on("blur", "text-area", function() {
-// Blur event happens when an element has lost focus & this is an event listener for that situation.
-// get the textarea's current value/text
-var text = $(this).val();
+$(".list-group").on("blur", "text-area", function () {
+  // Blur event happens when an element has lost focus & this is an event listener for that situation.
+  // get the textarea's current value/text
+  var text = $(this).val();
 
-// get the parent ul's id attribute
-var status = $(this)
-.closest(".list-group")
-/*closest() method returns the first ancestor of the selected element
-Ancesotr is a parent, grandparent, great-grandparent.
-This method moves up the DOM tree to retrieve the most recently used ancestor of the element. */
-.attr("id")
-//attr() method sets or returns attributes and values of the selected elements.
-.replace("list-", "");
-// get the task's position in the list of other li elements
-var index = $(this)
-.closest(".list-group-item")
-.index();
-// update task in array and re-save to localstroage.
-tasks[status][index].text = text;
-saveTasks();
+  // get the parent ul's id attribute
+  var status = $(this)
+    .closest(".list-group")
+    /*closest() method returns the first ancestor of the selected element
+    Ancesotr is a parent, grandparent, great-grandparent.
+    This method moves up the DOM tree to retrieve the most recently used ancestor of the element. */
+    .attr("id")
+    //attr() method sets or returns attributes and values of the selected elements.
+    .replace("list-", "");
+  // get the task's position in the list of other li elements
+  var index = $(this)
+    .closest(".list-group-item")
+    .index();
+  // update task in array and re-save to localstroage.
+  tasks[status][index].text = text;
+  saveTasks();
 
-/* tasks is an object.
-tasks [status] returns an array.
-tasks[status][index] returns the object at the given index in the array.
-tasks[status][index].text returns the text property of the object at the given index. */
+  /* tasks is an object.
+  tasks [status] returns an array.
+  tasks[status][index] returns the object at the given index in the array.
+  tasks[status][index].text returns the text property of the object at the given index. */
 
-// recreate p element
-var taskP = $("<p>")
-.addClass("m-1")
-.text(text);
-// m- sets the margin & m-1 sets the margin-left or padding-left.
-//1- (by default) sets the margin or padding to $spacer * .25.
-// $spacer * .25 sets the margin or padding to .25rem
-// replace textarea with p element
-$(this).replaceWith(taskP);
+  // recreate p element
+  var taskP = $("<p>")
+    .addClass("m-1")
+    .text(text);
+  // m- sets the margin & m-1 sets the margin-left or padding-left.
+  //1- (by default) sets the margin or padding to $spacer * .25.
+  // $spacer * .25 sets the margin or padding to .25rem
+  // replace textarea with p element
+  $(this).replaceWith(taskP);
 
-  });
+});
 
-  // due date was clicked
-  $(".list-group").on("click", "span", function() {
-    // get current text
-    var date = $(this)
-      .text()
-      .trim();
-  
-    // create new input element
-    var dateInput = $("<input>")
-      .attr("type", "text")
-      .addClass("form-control")
-      .val(date);
-    $(this).replaceWith(dateInput);
-  
-    // automatically bring up the calendar
-    dateInput.trigger("focus");
-  });
-  
+// due date was clicked
+// This event listener is for the <input> element.
+$(".list-group").on("click", "span", function () {
+  // get current text
+  var date = $(this).text().trim();
+
+  // create new input element
+  var dateInput = $("<input>")
+    .attr("type", "text")
+    .addClass("form-control")
+    .val(date);
+  $(this).replaceWith(dateInput);
+  // enable jquery ui datepicker
+  dateInput.datepicker({
+    minDate: 1
+  })
+  // created datepicker functionality every time a user clicks on the due date for a task.
+  // datepicker needed to be in this event listener so that the datepicker would run everytime a clicks on the due date.
+  // Also the datepicker is here because of the fact that the <input> element was created in js not in html.
+  // automatically bring up the calendar
+  dateInput.trigger("focus");
+});
+
 // value of the date was changed
-$(".list-group").on("blur", "input[type='text']",function() {
-// .on(events[,selector][,data], handler)
-// blur event is sent to an element when it loses focus
-// An element can lose focus via keyboard commands, such as the Tab key, or by mouse clicks elsewhere on the page.
+$(".list-group").on("blur", "input[type='text']", function () {
+  // .on(events[,selector][,data], handler)
+  // blur event is sent to an element when it loses focus
+  // An element can lose focus via keyboard commands, such as the Tab key, or by mouse clicks elsewhere on the page.
 
-// get current text
-var date = $(this)
-.val()
-.trim();
+  // get current text
+  var date = $(this)
+    .val()
+    .trim();
 
-// get the parent ul's id attribute
-var status = $(this)
-// $(this) refers to the element on which the event is called, which in this case is the <input> element.
-.closest(".list-group")
-.attr("id")
-.replace("list-", "");
+  // get the parent ul's id attribute
+  var status = $(this)
+    // $(this) refers to the element on which the event is called, which in this case is the <input> element.
+    .closest(".list-group")
+    .attr("id")
+    .replace("list-", "");
 
-// get the task's position in the list of other li elements
-var index = $(this)
-.closest(".list-group item")
-.index();
+  // get the task's position in the list of other li elements
+  var index = $(this)
+    .closest(".list-group item")
+    .index();
 
-// update task in array and re-save to localStorage
-tasks[status][index].date = date;
-saveTasks();
+  // update task in array and re-save to localStorage
+  tasks[status][index].date = date;
+  saveTasks();
 
-// recreate span element with bootstrap classes
-var taskSpan = $("<span>")
-.addClass("badge badge-primary badge-pill")
-.text(date);
+  // recreate span element with bootstrap classes
+  var taskSpan = $("<span>")
+    .addClass("badge badge-primary badge-pill")
+    .text(date);
 
-// replace input with span element
-$(this).replaceWith(taskSpan);
-// $(this) refers to the element that it belongs to,  which in this case is input
-// input element is being replaced with a span element.
-// <span> is an inline container
+  // replace input with span element
+  $(this).replaceWith(taskSpan);
+  // $(this) refers to the element that it belongs to,  which in this case is input
+  // input element is being replaced with a span element.
+  // <span> is an inline container
 
 });
 /*on() method attaches one or more event handlers for the selected elements
@@ -289,7 +295,7 @@ this keyword is used to refer to the actual elements.*/
 // trim() method removes any extra white space before or after the element targeted by text().
 // $("<textarea>") tells jQuery to create new <textarea> element.
 // remove all tasks
-$("#remove-tasks").on("click", function() {
+$("#remove-tasks").on("click", function () {
   for (var key in tasks) {
     tasks[key].length = 0;
     $("#list-" + key).empty();
