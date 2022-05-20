@@ -45,8 +45,12 @@ var saveTasks = function() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 };
 
-
-
+$(".card .list-group").sortable({
+connectWith: $(".card .list-group")
+});
+// sortable() turned every element with the class list-group in a sortable list
+/*connectWith is a selector of other sortable elements that the items from this list should be connected to.
+connectWith  linked these sortable lists with any other lists that have the same class.*/
 
 // modal was triggered
 $("#task-form-modal").on("show.bs.modal", function() {
