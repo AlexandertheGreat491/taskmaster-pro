@@ -37,3 +37,7 @@ bottom-trash-drag {
   transform: translateY(0);
   opacity: 1;
 }
+
+bottom-trash-active{
+  background-color: rgba(234,0,39,1);
+}
