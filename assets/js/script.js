@@ -14,7 +14,7 @@ var createTask = function (taskText, taskDate, taskList) {
   taskLi.append(taskSpan, taskP);
 
   // check due date
-  audtiTask(taskLi);
+  auditTask(taskLi);
 
   // append to ul list on the page
   $("#list-" + taskList).append(taskLi);
@@ -35,7 +35,6 @@ var loadTasks = function () {
 
   // loop over object properties
   $.each(tasks, function (list, arr) {
-    console.log(list, arr);
     // then loop over sub-array
     arr.forEach(function (task) {
       createTask(task.text, task.date, list);
@@ -48,54 +47,35 @@ var saveTasks = function () {
 };
 
 var auditTask = function (taskEl) {
-
-  // to ensure element is getting to the function
-  // console.log(taskEl);
   // get date from task element
-
   var date = $(taskEl)
-  .find("span")
-  .text()
-  .trim();
-
-  // date variable created from taskEl to make a new Moment object
-  // ensure that it worked
-
-  //console.log(date);
+    .find("span")
+    .text()
+    .trim();
 
   // convert to moment object at 5:00pm
-
   var time = moment(date, "L").set("hour", 17);
-
   // moment(date, "L") configures the Moment object to have the date be in month numeral, day of month, year format.
   // this should print out an object for the value value of the date variable, but at 5:00pm of that date.
   // .set("hour", 17) method changes the time to 5pm instead of 12am. 17=5pm, 24-hour time.
-  //console.log(time);
 
-  // remove old classes from element
-
+  // remove any old classes from element
   $(taskEl).removeClass("list-group-item-warning list-group-item-danger");
 
   // apply new class if task is near/over due date
-
   if (moment().isAfter(time)) {
     $(taskEl).addClass("list-group-item-danger");
+  } else if (Math.abs(moment().diff(time, "days")) <= 2) {
+    $(taskEl).addClass("list-group-item-warning");
   }
+};
 //moment().isAfter(time) is a query method that means true or false checks on the date can be performed to get more information.
 // .isAfter() checks is that the moment() value comes later than the value of the time variable.
-
-// apply new class if task is near/over due date
-if (moment().isAfter(time)) {
-  $(taskEl).addClass("list-group-item-danger");
-}
-else if (Math.abs(moment().diff(time, "days")) <= 2) {
-  $(taskEl).addClass("list-group-item-warning");
-}
-};
 // .diff() compares two times
 // .abs() JavaScript Math object returns the absolute value of a number as long as it's greater than or equal to 2 days.
-// enable draggable/sortable feature on list-group elements.
 
+
+// enable draggable/sortable feature on list-group elements
 $(".card .list-group").sortable({
   // enable dragging across lists
   connectWith: $(".card .list-group"),
@@ -103,21 +83,17 @@ $(".card .list-group").sortable({
   tolerance: "pointer",
   helper: "clone",
   activate: function (event, ui) {
-    //console.log(ui);
     $(this).addClass("dropover");
     $(".bottom-trash").addClass("bottom-trash-drag");
   },
   deactivate: function (event, ui) {
-    //console.log(ui);
-    $(this).addClass("dropover");
+    $(this).removeClass("dropover");
     $(".bottom-trash").removeClass("bottom-trash-drag");
   },
   over: function (event) {
-    //console.log(event);
-    $(event.target).addClass("dropover-active")
+    $(event.target).addClass("dropover-active");
   },
   out: function (event) {
-    //console.log(event);
     $(event.target).removeClass("dropover-active");
   },
   update: function () {
@@ -148,9 +124,6 @@ $(".card .list-group").sortable({
     // update array on tasks object and save
     tasks[arrName] = tempArr;
     saveTasks();
-  },
-  stop: function (event) {
-    $(this).removeClass("dropover");
   }
 });
 
@@ -163,33 +136,38 @@ $("#trash").droppable({
   // Specifies which mode to use for testing whether a draggable is hovering over a droppable.
   // "touch" value used when the draggable overlaps the droppable any amount.
   drop: function (event, ui) {
-    // Triggered when an accepted draggable is dropped on the droppable.
-    //console.log("drop");
+    // remove() method removes the dragged element from the dom.
     ui.draggable.remove();
-    // remove dragged element from the dom.
-    // remove() method removes the element entirely from the DOM.
-  $(".bottom-trash").removeClass("bottom-trash-active");
+    $(".bottom-trash").removeClass("bottom-trash-active");
   },
   over: function (event, ui) {
-    //console.log(ui);
+    console.log(ui);
     $(".bottom-trash").addClass("bottom-trash-active");
   },
   out: function (event, ui) {
-    //console.log(ui);
-    $(".bottom-trash").addClass("bottom-trash-active");
+    $(".bottom-trash").removeClass("bottom-trash-active");
   }
 });
-
 // jQuery's each() method will run a callback function for every item/element in the array.
 // $(this) refers to the <li> element.
 // sortable() turned every element with the class list-group in a sortable list
 /*connectWith is a selector of other sortable elements that the items from this list should be connected to.
 connectWith  linked these sortable lists with any other lists that have the same class.*/
 
+// convert text field into a jquery date picker
+$("#modalDueDate").datepicker({
+  // force user to select a future date
+  minDate: 1
+});
+// Selects a date from a popup or inline calendar.
+// Targets the second <label> element with the "Due Date" text.
+// The minDate option is the minimum selectable date and the 1 value sets that to be one day from today.
+// The minimum date is now one day from today.
+
 // modal was triggered
 $("#task-form-modal").on("show.bs.modal", function () {
   // clear values
-  $("#modalTaskDescription, #modalDueDate").trigger("focus");
+  $("#modalTaskDescription, #modalDueDate").val("");
 });
 
 // modal is fully visible
@@ -198,13 +176,6 @@ $("#task-form-modal").on("shown.bs.modal", function () {
   $("#modalTaskDescription").trigger("focus");
 });
 
-// Selects a date from a popup or inline calendar.
-// Targets the second <label> element with the "Due Date" text.
-$("modalDueDate").datepicker({
-  minDate: 1
-});
-// The minDate option is the minimum selectable date and the 1 value sets that to be one day from today.
-// The minimum date is now one day from today.
 // save button in modal was clicked
 $("#task-form-modal .btn-save").click(function () {
   // get form values
@@ -226,69 +197,55 @@ $("#task-form-modal .btn-save").click(function () {
     saveTasks();
   }
 });
+
 // task text was clicked
-// This event listener is for the <textarea> element.
 $(".list-group").on("click", "p", function () {
-  // get current text p element
+  // get current text of p element
   var text = $(this)
     .text()
     .trim();
-  // replace p element with a new textarea
-  var textInput = $("<textarea>")
-    .addClass("form-control")
-    .val(text);
 
+  // replace p element with a new textarea
+  var textInput = $("<textarea>").addClass("form-control").val(text);
   $(this).replaceWith(textInput);
-  // $(this)=<p> element & replaceWith replaces <p> with <textarea> element.
-  // Now $(this)=<textarea> element.
-  // auto foucs new element
+
+  // auto focus new element
   textInput.trigger("focus");
 });
+
 // editable field was un-focused
-$(".list-group").on("blur", "text-area", function () {
-  // Blur event happens when an element has lost focus & this is an event listener for that situation.
-  // get the textarea's current value/text
+$(".list-group").on("blur", "textarea", function () {
+  // get current value of textarea
   var text = $(this).val();
 
-  // get the parent ul's id attribute
+  // get status type and position in the list
   var status = $(this)
     .closest(".list-group")
-    /*closest() method returns the first ancestor of the selected element
-    Ancesotr is a parent, grandparent, great-grandparent.
-    This method moves up the DOM tree to retrieve the most recently used ancestor of the element. */
     .attr("id")
-    //attr() method sets or returns attributes and values of the selected elements.
     .replace("list-", "");
-  // get the task's position in the list of other li elements
   var index = $(this)
     .closest(".list-group-item")
     .index();
-  // update task in array and re-save to localstroage.
+
+  // update task in array and re-save to localstorage
   tasks[status][index].text = text;
   saveTasks();
-
-  /* tasks is an object.
-  tasks [status] returns an array.
-  tasks[status][index] returns the object at the given index in the array.
-  tasks[status][index].text returns the text property of the object at the given index. */
 
   // recreate p element
   var taskP = $("<p>")
     .addClass("m-1")
     .text(text);
-  // m- sets the margin & m-1 sets the margin-left or padding-left.
-  //1- (by default) sets the margin or padding to $spacer * .25.
-  // $spacer * .25 sets the margin or padding to .25rem
-  // replace textarea with p element
-  $(this).replaceWith(taskP);
 
+  // replace textarea with new content
+  $(this).replaceWith(taskP);
 });
 
 // due date was clicked
-// This event listener is for the <input> element.
 $(".list-group").on("click", "span", function () {
   // get current text
-  var date = $(this).text().trim();
+  var date = $(this)
+    .text()
+    .trim();
 
   // create new input element
   var dateInput = $("<input>")
@@ -296,96 +253,76 @@ $(".list-group").on("click", "span", function () {
     .addClass("form-control")
     .val(date);
   $(this).replaceWith(dateInput);
-  // enable jquery ui datepicker
+
+  // enable jquery ui date picker
   dateInput.datepicker({
-    minDate: 1
-  })
-  // created datepicker functionality every time a user clicks on the due date for a task.
+    minDate: 1,
+    onClose: function () {
+      // when calendar is closed, force a "change" event
+      $(this).trigger("change");
+    }
+  });
+// created datepicker functionality every time a user clicks on the due date for a task.
   // datepicker needed to be in this event listener so that the datepicker would run everytime a clicks on the due date.
   // Also the datepicker is here because of the fact that the <input> element was created in js not in html.
   // automatically bring up the calendar
   dateInput.trigger("focus");
 });
 
-// value of the date was changed
+// value of due date was changed
 // due date change event handler
-$(".list-group").on("change", "input[type='text']", function(){
-var date = $(this).val();
+$(".list-group").on("change", "input[type='text']", function () {
+  var date = $(this).val();
 
-var status = $(this).closest(".list-group").attr("id").replace("list-", "");
-var index = $(this).closest(".list-group-item").index();
-
-tasks[status][index].date = date;
-saveTasks();
-
-var taskSpan = $("<span>").addClass("badge badge-primary badge-pill").text(date);
-$(this).replaceWith(taskSpan);
-
-// Pass task's <li> element into auditTask() to check new due date.
-auditTask($(taskSpan).closest(".list-group-item"));
-});
-
-$(".list-group").on("blur", "input[type='text']", function () {
-  // .on(events[,selector][,data], handler)
-  // blur event is sent to an element when it loses focus
-  // An element can lose focus via keyboard commands, such as the Tab key, or by mouse clicks elsewhere on the page.
-
-  // get current text
-  var date = $(this)
-    .val()
-    .trim();
-
-  // get the parent ul's id attribute
+  // get status type and position in the list
   var status = $(this)
-    // $(this) refers to the element on which the event is called, which in this case is the <input> element.
     .closest(".list-group")
     .attr("id")
     .replace("list-", "");
-
-  // get the task's position in the list of other li elements
   var index = $(this)
-    .closest(".list-group item")
+    .closest(".list-group-item")
     .index();
 
-  // update task in array and re-save to localStorage
+  // update task in array and re-save to localstorage
   tasks[status][index].date = date;
   saveTasks();
 
-  // recreate span element with bootstrap classes
+  // recreate span and insert in place of input element
   var taskSpan = $("<span>")
     .addClass("badge badge-primary badge-pill")
     .text(date);
-
-  // replace input with span element
   $(this).replaceWith(taskSpan);
+  auditTask($(taskSpan).closest(".list-group-item"));
   // $(this) refers to the element that it belongs to,  which in this case is input
   // input element is being replaced with a span element.
   // <span> is an inline container
-
 });
+
 /*on() method attaches one or more event handlers for the selected elements
 and child elements. Attaches p elements to the <ul> element that has the list-group class.
 this keyword is used to refer to the actual elements.*/
 // text() method will get the inner text content of the current element <p> & represented by $(this).
 // trim() method removes any extra white space before or after the element targeted by text().
-// $("<textarea>") tells jQuery to create new <textarea> element.
 // remove all tasks
 $("#remove-tasks").on("click", function () {
   for (var key in tasks) {
     tasks[key].length = 0;
     $("#list-" + key).empty();
   }
+  console.log(tasks);
   saveTasks();
 });
 
 // load tasks for the first time
 loadTasks();
 
-setInterval(function(){
-  $(".card .list-group-item").each(function(index, el) {
-auditTask(el);
+// audit task due dates every 30 minutes
+setInterval(function () {
+  $(".card .list-group-item").each(function () {
+    auditTask($(this));
   });
-}, (1,000 * 60) * 30);
+}, 1800000);
+
 // jQuery selector passes each element it finds using the selector into the callback function.
 // That element is expressed in the el argument of the function.
 // In this interval a loop occurs over every task on the page with a class of list-group-item.
