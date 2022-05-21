@@ -165,12 +165,15 @@ $("#trash").droppable({
     ui.draggable.remove();
     // remove dragged element from the dom.
     // remove() method removes the element entirely from the DOM.
+  $(".bottom-trash").removeClass("bottom-trash-active");
   },
   over: function (event, ui) {
-    console.log(ui);
+    //console.log(ui);
+    $(".bottom-trash").addClass("bottom-trash-active");
   },
   out: function (event, ui) {
-    console.log(ui);
+    //console.log(ui);
+    $(".bottom-trash").addClass("bottom-trash-active");
   }
 });
 
