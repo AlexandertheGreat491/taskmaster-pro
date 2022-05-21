@@ -32,3 +32,8 @@ bottom-trash {
   transition: all .5s ease-in-out;
   background-color: rgba(234,0,39,0.7);
 }
+
+bottom-trash-drag {
+  transform: translateY(0);
+  opacity: 1;
+}
