@@ -1,7 +1,3 @@
-ul.list-group {
-  min-height: 130px;
-}
-
 body {
   font-family: "Open Sans", sans-serif;
 }
@@ -15,7 +11,12 @@ h6 {
   font-family: "Staatliches", sans-serif;
 }
 
-dropover {
+ul.list-group {
+  min-height: 130px;
+}
+
+
+.dropover {
   background-color: rgba(0,0,0,0.3);
 }
 
@@ -23,7 +24,7 @@ dropover-active {
   background-color: rgba(0,0,0,0.9);
 }
 
-bottom-trash {
+.bottom-trash {
   opacity: 0;
   color: #f1f1f1;
   font-size: 2.3rem;
@@ -33,24 +34,24 @@ bottom-trash {
   background-color: rgba(234,0,39,0.7);
 }
 
-bottom-trash-drag {
+.bottom-trash-drag {
   transform: translateY(0);
   opacity: 1;
 }
 
-bottom-trash-active {
+.bottom-trash-active {
   background-color: rgba(234,0,39,1);
 }
 
-btn-add, btn-save {
-  background-color: #fa8bff;
+.btn-add, .btn-save {
+  background-color: #FA8BFF;
   background-image: linear-gradient(45deg, #fa8bff 0%, #2bd2ff 52%, #2bff88, 90%);
   transition: all .5s ease-out;
   background-size: 1px 100px;
   background-position: 0 -10px;
 }
 
-btn-close, btn-delete {
+.btn-close, .btn-delete {
 background-color: #ea0028;
 background-image: linear-gradient(180deg, #ff9a8b 0%, #ea0028 100%);
 transition: all .5s ease-out;
@@ -58,6 +59,9 @@ background-size: 1px 100px;
 background-position: 0 -10px;
 }
 
-:hover {
+.btn-save:hover,
+.btn-add:hover,
+.btn-close:hover,
+.btn-delete:hover {
   background-position: 1px -50px;
 }
