@@ -370,5 +370,11 @@ $("#remove-tasks").on("click", function () {
 loadTasks();
 
 setInterval(function(){
-  alert("This alert shows up every five seconds!")
-}, 5,000);
+  $(".card .list-group-item").each(function(index, el) {
+auditTask(el);
+  });
+}, (1,000 * 60) * 30);
+// jQuery selector passes each element it finds using the selector into the callback function.
+// That element is expressed in the el argument of the function.
+// In this interval a loop occurs over every task on the page with a class of list-group-item.
+// Then the auditTask() function is executed to check the due date for each one.
