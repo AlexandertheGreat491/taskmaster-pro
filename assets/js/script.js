@@ -100,16 +100,22 @@ $(".card .list-group").sortable({
   tolerance: "pointer",
   helper: "clone",
   activate: function (event, ui) {
-    console.log(ui);
+    //console.log(ui);
+    $(this).addClass("dropover");
+    $(".bottom-trash").addClass("bottom-trash-drag");
   },
   deactivate: function (event, ui) {
-    console.log(ui);
+    //console.log(ui);
+    $(this).addClass("dropover");
+    $(".bottom-trash").removeClass("bottom-trash-drag");
   },
   over: function (event) {
-    console.log(event);
+    //console.log(event);
+    $(event.target).addClass("dropover-active")
   },
   out: function (event) {
-    console.log(event);
+    //console.log(event);
+    $(event.target).removeClass("dropover-active");
   },
   update: function () {
     var tempArr = [];
